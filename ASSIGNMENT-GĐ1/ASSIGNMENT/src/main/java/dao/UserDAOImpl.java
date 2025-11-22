@@ -60,11 +60,14 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User login(String id, String password) {
+	public User login(String idOrEmail, String password) {
 		try {
-			String jpql = "SELECT u FROM User u WHERE u.id = :id AND u.password = :password";
+			String jpql = "SELECT u FROM User u "
+                    + "WHERE (u.id = :input OR u.email = :input) "
+                    + "AND u.password = :password";
 			TypedQuery<User> query = em.createQuery(jpql, User.class);
-			query.setParameter("id", id);
+//			query.setParameter("id", id);
+			query.setParameter("input", idOrEmail.trim()); // tên ở đây phải trùng :input
 			query.setParameter("password", password);
 
 			return query.getSingleResult();
