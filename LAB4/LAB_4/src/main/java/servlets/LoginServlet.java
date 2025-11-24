@@ -97,8 +97,6 @@ public class LoginServlet extends HttpServlet {
 					}
 				}
 			}
-			// Forward tới home.jsp
-			request.getRequestDispatcher("/home.jsp").forward(request, response);
 			response.sendRedirect(request.getContextPath() + "/Home");
 		} else {
 			request.setAttribute("message", "Đăng nhập thất bại!");

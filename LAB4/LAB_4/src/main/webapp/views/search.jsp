@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Search</title>
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -23,10 +23,12 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container mt-4">
-		<h2 class="mb-4 text-center">Tìm kiếm Video</h2>
+	<c:set var="path" value="${pageContext.request.contextPath}" />
 
-		<!-- Form tìm kiếm -->
+	<div class="container mt-3">
+		<a class="btn btn-secondary mb-3" href="${path}/Home"><i
+			class="fa-solid fa-arrow-left"></i> Trang chủ</a>
+		<h2 class="mb-4 text-center">Tìm kiếm Video</h2>
 		<form action="search" method="get" class="mb-4">
 			<div class="input-group">
 				<input type="text" name="keyword" class="form-control"
@@ -37,7 +39,6 @@
 			</div>
 		</form>
 
-		<!-- Hiển thị kết quả -->
 		<c:if test="${empty results}">
 			<p class="text-center text-danger">Không tìm thấy video nào!</p>
 		</c:if>
@@ -47,7 +48,6 @@
 				<c:forEach var="video" items="${results}">
 					<div class="col-md-4 mb-4">
 						<div class="card h-100 shadow-sm">
-							<!-- Thumbnail YouTube -->
 							<img src="https://img.youtube.com/vi/${video.poster}/0.jpg"
 								class="card-img-top" alt="${video.title}">
 							<div class="card-body">
@@ -59,7 +59,7 @@
 							</div>
 							<div class="card-footer text-center">
 								<a href="https://www.youtube.com/watch?v=${video.poster}"
-									target="_blank" class="btn btn-success"> Xem Video </a>
+									target="_blank" class="btn btn-success">Xem Video</a>
 							</div>
 						</div>
 					</div>

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Share-Summary</title>
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -23,7 +23,11 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container mt-4">
+	<c:set var="path" value="${pageContext.request.contextPath}" />
+
+	<div class="container mt-3">
+		<a class="btn btn-secondary mb-3" href="${path}/Home"><i
+			class="fa-solid fa-arrow-left"></i> Trang chủ</a>
 		<h2 class="text-center mb-4">Tổng hợp chia sẻ Video</h2>
 		<table class="table table-bordered table-striped">
 			<thead class="table-dark">
