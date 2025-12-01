@@ -1,51 +1,52 @@
 package filter;
 
-import jakarta.servlet.Filter;
+import java.io.IOException;
+import java.net.URLEncoder;
+
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
 
 import entity.User;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = { "/User/*", "/User"})
-public class AuthFilter extends HttpFilter implements Filter {
+@WebFilter(filterName = "AuthFilter", urlPatterns = { "/User/*", "/User" })
+public class AuthFilter extends HttpFilter {
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+    @Override
+    public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain)
+            throws IOException, ServletException {
 
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
-		HttpSession session = req.getSession();
+        String uri = req.getRequestURI();
+        User user = (User) req.getSession().getAttribute("user"); // Lấy user từ session
+        String error = "";
 
-		User user = (User) session.getAttribute("user");
-		String uri = req.getRequestURI();
+        System.out.println("AuthFilter running");
 
-		// Nếu chưa đăng nhập -> redirect login
-		if (user == null) {
-			session.setAttribute("securi", "Vui lòng đăng nhập để sử dụng chức năng này!");
-			resp.sendRedirect(req.getContextPath() + "/Login");
-			return; // bắt buộc return để ngăn chain.doFilter
-		}
+        // Kiểm tra đăng nhập
+        if (user == null) {
+            error = resp.encodeURL("Please login to use this function!");
+            System.out.println("Vui lòng đăng nhập!");
+        }
+        // Kiểm tra quyền admin
+        else if (!Boolean.TRUE.equals(user.isAdmin()) && uri.contains("/User")) {
+            error = resp.encodeURL("Please login with admin role");
+            System.out.println("Chỉ admin mới được truy cập!");
+        }
 
-		// Nếu không phải admin nhưng truy cập /User* hoặc /Video* -> redirect login
-		if ((uri.startsWith(req.getContextPath() + "/User")) && !user.isAdmin()) {
-			session.setAttribute("securi", "Chỉ admin mới được truy cập!");
-			resp.sendRedirect(req.getContextPath() + "/Login");
-			return;
-		}
-
-		// Nếu hợp lệ -> cho qua
-		session.setMaxInactiveInterval(30 * 60); // 30 phút
-		chain.doFilter(request, response);
-	}
+        // Nếu có lỗi -> lưu session và redirect
+        if (!error.isEmpty()) {
+            req.getSession().setAttribute("securi", error);
+            resp.sendRedirect(req.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+            System.out.println("Error!");
+        } 
+        // Nếu hợp lệ -> cho qua
+        else {
+            System.out.println("No Error!");
+            chain.doFilter(req, resp);
+            req.getSession().setMaxInactiveInterval(40); // giống file mẫu: 40 giây
+        }
+    }
 }

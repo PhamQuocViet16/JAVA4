@@ -151,9 +151,9 @@
 						<!-- Remember me -->
 						<div class="form-check mb-3">
 							<input class="form-check-input" type="checkbox"
-								name="remember-me" id="rememberMe" ${remember ? "checked" : ""}>
-							<label class="form-check-label" for="rememberMe"> Nhớ mật
-								khẩu </label>
+								name="remember-me" id="rememberMe" ${remember}> <label
+								class="form-check-label" for="rememberMe"> Nhớ mật khẩu
+							</label>
 						</div>
 
 						<button type="submit" class="btn btn-primary w-100 py-2">
