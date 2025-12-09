@@ -7,13 +7,15 @@ import entity.Share;
 public interface ShareDAO {
 	List<Share> findAll();
 
-	Share findById(String id);
+	Share findById(Long id);
 
 	void create(Share entity);
 
 	void update(Share entity);
 
-	void deleteById(String id);
+	void deleteById(Long id);
 
 	List<Share> findByUser(String user);
+	
+	List<Object[]> findSharesByVideo(String videoId);
 }

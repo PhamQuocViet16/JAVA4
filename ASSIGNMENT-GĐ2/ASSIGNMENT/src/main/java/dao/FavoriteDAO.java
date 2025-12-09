@@ -18,4 +18,10 @@ public interface FavoriteDAO {
 	
 	//Xoá favorite
 	void delete(User user, Video video);
+	
+	// THỐNG KÊ SỐ NGƯỜI YÊU THÍCH TỪNG TIỂU PHẨM
+	List<Object[]> countFavoriteByVideo();
+	
+	// Lọc danh sách người yêu thích theo từng video
+	List<Object[]> findUsersByVideo(String videoId);
 }

@@ -80,4 +80,35 @@ public class FavoriteDAOImpl implements FavoriteDAO {
 		}
 	}
 
+	@Override
+	public List<Object[]> countFavoriteByVideo() {
+		String jpql = """
+				    SELECT f.video.title,
+				           COUNT(f),
+				           MAX(f.likeDate),
+				           MIN(f.likeDate)
+				    FROM Favorite f
+				    GROUP BY f.video.title
+				    ORDER BY COUNT(f) DESC
+				""";
+		return em.createQuery(jpql, Object[].class).getResultList();
+	}
+
+	@Override
+	public List<Object[]> findUsersByVideo(String title) {
+	    String jpql = """
+	            SELECT f.user.id,
+	                   f.user.fullname,
+	                   f.user.email,
+	                   f.likeDate
+	            FROM Favorite f
+	            WHERE LOWER(f.video.title) LIKE LOWER(:title)
+	            ORDER BY f.likeDate DESC
+	        """;
+
+	    TypedQuery<Object[]> q = em.createQuery(jpql, Object[].class);
+	    q.setParameter("title", "%" + title.trim() + "%");
+	    return q.getResultList();
+	}
+
 }

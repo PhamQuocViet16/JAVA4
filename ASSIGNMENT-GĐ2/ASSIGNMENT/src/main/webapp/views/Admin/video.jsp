@@ -94,14 +94,15 @@
 									<li><a class="dropdown-item" href="${path}/Logout">Đăng
 											Xuất</a></li>
 									<li><a class="dropdown-item" href="#">Đổi Mật Khẩu</a></li>
-									<li><a class="dropdown-item" href="${path}/AccountUpdate">Chỉnh Sửa Tài
-											Khoản</a></li>
+									<li><a class="dropdown-item" href="${path}/AccountUpdate">Chỉnh
+											Sửa Tài Khoản</a></li>
 								</c:when>
 								<c:otherwise>
 									<li><a class="dropdown-item" href="${path}/Login">Đăng
 											Nhập</a></li>
 									<li><a class="dropdown-item" href="#">Quên Mật Khẩu</a></li>
-									<li><a class="dropdown-item" href="${path}/Register">Đăng Ký</a></li>
+									<li><a class="dropdown-item" href="${path}/Register">Đăng
+											Ký</a></li>
 								</c:otherwise>
 							</c:choose>
 						</ul></li>
@@ -131,6 +132,18 @@
 
 		<!-- Form thêm/sửa video -->
 		<c:url var="url" value="/Video" />
+		<form method="get" action="${url}/search"
+			class="d-flex justify-content-center mb-4">
+			<div class="input-group w-50">
+				<span class="input-group-text bg-white border-end-0"
+					id="search-icon"> <i class="fa-solid fa-magnifying-glass"></i>
+				</span> <input type="text" name="keyword"
+					class="form-control border-start-0" placeholder="Tìm video..."
+					aria-label="Tìm video" aria-describedby="search-icon"
+					value="${param.keyword != null ? param.keyword : ''}">
+				<button class="btn btn-primary" type="submit">Tìm</button>
+			</div>
+		</form>
 		<div class="card shadow mb-4">
 			<div class="card-header bg-primary text-white">
 				<h5 class="mb-0">Thông Tin Video</h5>

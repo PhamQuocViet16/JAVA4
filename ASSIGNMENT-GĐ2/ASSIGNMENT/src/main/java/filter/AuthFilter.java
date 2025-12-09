@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import entity.User;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = { "/User/*","/Video/*", "/Favorite/*", "/AccountUpdate/*"})
+@WebFilter(filterName = "AuthFilter", urlPatterns = { "/User/*","/Video/*", "/Favorite/*", "/AccountUpdate/*","/Reports/*"})
 public class AuthFilter extends HttpFilter {
 
 	@Override
@@ -35,7 +35,7 @@ public class AuthFilter extends HttpFilter {
 			resp.sendRedirect(req.getContextPath() + "/Login?error=" + URLEncoder.encode(error, "UTF-8"));
 		} else {
 			chain.doFilter(req, resp);
-			req.getSession().setMaxInactiveInterval(120);
+			req.getSession().setMaxInactiveInterval(240);
 		}
 	}
 }
